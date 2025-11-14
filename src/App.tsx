@@ -113,15 +113,25 @@ function App() {
   return (
     <div className="h-screen w-screen bg-background text-foreground overflow-hidden">
       <div className="h-full flex flex-col">
-        <header className="border-b border-border bg-gradient-to-r from-card/80 via-card/60 to-card/80 backdrop-blur-md px-6 py-4 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/5 before:via-transparent before:to-accent/5 before:opacity-50">
+        <motion.header 
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+          className="border-b border-border bg-gradient-to-r from-card/90 via-card/70 to-card/90 backdrop-blur-xl px-6 py-4 relative overflow-hidden before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/8 before:via-transparent before:to-accent/8 before:opacity-50"
+        >
+          <div className="absolute inset-0 bg-gradient-to-b from-accent/5 to-transparent opacity-40" />
           <div className="flex items-center justify-between relative z-10">
             <div className="flex items-center gap-4">
               <div className="flex items-center gap-3">
-                <div className="relative">
-                  <Lightning weight="fill" className="w-8 h-8 text-accent animate-pulse" />
-                  <div className="absolute inset-0 blur-xl bg-accent/30 animate-pulse" />
-                </div>
-                <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text">
+                <motion.div 
+                  className="relative"
+                  whileHover={{ scale: 1.1, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
+                  <Lightning weight="fill" className="w-8 h-8 text-accent relative z-10" />
+                  <div className="absolute inset-0 blur-2xl bg-accent/50 animate-pulse" />
+                </motion.div>
+                <h1 className="text-3xl font-bold tracking-tight bg-gradient-to-br from-foreground via-foreground/90 to-foreground/70 bg-clip-text">
                   NeuroFleet Command
                 </h1>
               </div>
@@ -135,7 +145,7 @@ function App() {
                 size="sm"
                 onClick={handleExport}
                 disabled={incidentsList.length === 0}
-                className="hover:bg-accent/10 hover:border-accent transition-all duration-300"
+                className="hover:bg-accent/10 hover:border-accent hover:text-accent transition-all duration-300 hover:shadow-lg hover:shadow-accent/20"
               >
                 <Download weight="bold" className="w-4 h-4 mr-2" />
                 Exporter
@@ -144,7 +154,7 @@ function App() {
                 variant={isStreamActive ? "secondary" : "default"}
                 size="sm"
                 onClick={() => setIsStreamActive(!isStreamActive)}
-                className="transition-all duration-300"
+                className="transition-all duration-300 hover:scale-105"
               >
                 {isStreamActive ? "Pause Stream" : "Start Stream"}
               </Button>
@@ -156,26 +166,37 @@ function App() {
                   toast.success("Incidents effacés")
                 }}
                 disabled={incidentsList.length === 0}
-                className="hover:bg-destructive/10 hover:border-destructive hover:text-destructive transition-all duration-300"
+                className="hover:bg-destructive/10 hover:border-destructive hover:text-destructive transition-all duration-300 hover:shadow-lg hover:shadow-destructive/20"
               >
                 <Trash weight="bold" className="w-4 h-4 mr-2" />
                 Clear All
               </Button>
             </div>
           </div>
-        </header>
+        </motion.header>
 
-        <div className="px-6 py-5 border-b border-border bg-gradient-to-b from-background to-card/20">
+        <motion.div 
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="px-6 py-5 border-b border-border bg-gradient-to-b from-background to-card/20 backdrop-blur-sm"
+        >
           <StatsOverview incidents={incidentsList} />
-        </div>
+        </motion.div>
 
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden">
-          <div className="h-full border-r border-border p-6 bg-gradient-to-br from-background to-card/10">
-            <div className="h-full flex flex-col">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full border-r border-border p-6 bg-gradient-to-br from-background via-background to-card/10 relative overflow-hidden"
+          >
+            <div className="absolute top-0 right-0 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+            <div className="h-full flex flex-col relative z-10">
               <div className="mb-4">
                 <h2 className="text-xl font-semibold mb-1 flex items-center gap-2">
                   Live Incident Map
-                  <div className="h-2 w-2 rounded-full bg-accent animate-pulse" />
+                  <div className="h-2 w-2 rounded-full bg-accent animate-pulse shadow-lg shadow-accent/50" />
                 </h2>
                 <p className="text-sm text-muted-foreground">
                   Real-time geographic visualization of fleet incidents
@@ -188,10 +209,16 @@ function App() {
                 />
               </div>
             </div>
-          </div>
+          </motion.div>
 
-          <div className="h-full flex flex-col bg-gradient-to-br from-background to-card/5">
-            <div className="border-b border-border px-6 py-4">
+          <motion.div 
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.6, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            className="h-full flex flex-col bg-gradient-to-br from-background via-background to-card/5 relative overflow-hidden"
+          >
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
+            <div className="border-b border-border px-6 py-4 relative z-10 backdrop-blur-sm">
               <div className="flex items-center justify-between mb-4">
                 <div>
                   <h2 className="text-xl font-semibold mb-1">Analysis Feed</h2>
@@ -199,14 +226,18 @@ function App() {
                     AI-powered incident analysis and recommendations
                   </p>
                 </div>
-                <div className="text-right">
+                <motion.div 
+                  className="text-right"
+                  whileHover={{ scale: 1.05 }}
+                  transition={{ type: "spring", stiffness: 400 }}
+                >
                   <div className="text-2xl font-bold font-mono text-accent">
                     {incidentsWithAnalysis.length}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Analyzed
                   </div>
-                </div>
+                </motion.div>
               </div>
               
               <FilterControls
@@ -219,13 +250,13 @@ function App() {
               />
             </div>
 
-            <ScrollArea className="flex-1">
+            <ScrollArea className="flex-1 relative z-10">
               <div className="p-6 space-y-4">
                 {pendingIncidents.length > 0 && (
                   <div className="space-y-4">
                     {pendingIncidents.map((incident) => (
                       <div key={incident.id} className="space-y-3">
-                        <div className="p-5 border border-border rounded-lg bg-card/50 animate-shimmer">
+                        <div className="p-5 border border-border rounded-lg bg-card/50 animate-shimmer backdrop-blur-sm">
                           <div className="flex items-center gap-3 mb-4">
                             <Skeleton className="h-5 w-5 rounded-full" />
                             <Skeleton className="h-6 w-20 rounded-md" />
@@ -240,9 +271,16 @@ function App() {
                 )}
 
                 {incidentsWithAnalysis.length > 0 ? (
-                  incidentsWithAnalysis.map((incident) => (
-                    <div 
+                  incidentsWithAnalysis.map((incident, index) => (
+                    <motion.div 
                       key={incident.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ 
+                        duration: 0.4, 
+                        delay: index * 0.05,
+                        ease: [0.16, 1, 0.3, 1]
+                      }}
                       onClick={() => handleIncidentClick(incident)}
                       className="cursor-pointer"
                     >
@@ -250,17 +288,29 @@ function App() {
                         incident={incident}
                         isNew={newIncidentIds.has(incident.id)}
                       />
-                    </div>
+                    </motion.div>
                   ))
                 ) : (
                   !pendingIncidents.length && (
                     <motion.div 
                       className="flex flex-col items-center justify-center py-12 text-center"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                     >
-                      <Lightning weight="thin" className="w-20 h-20 text-muted-foreground/50 mb-4" />
+                      <motion.div
+                        animate={{ 
+                          y: [0, -10, 0],
+                          opacity: [0.5, 0.8, 0.5]
+                        }}
+                        transition={{ 
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
+                      >
+                        <Lightning weight="thin" className="w-20 h-20 text-muted-foreground/50 mb-4" />
+                      </motion.div>
                       <h3 className="text-lg font-semibold mb-2">
                         {selectedType !== "all" 
                           ? "Aucun incident de ce type"
@@ -276,7 +326,7 @@ function App() {
                 )}
               </div>
             </ScrollArea>
-          </div>
+          </motion.div>
         </div>
       </div>
 

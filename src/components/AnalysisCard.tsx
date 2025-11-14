@@ -31,19 +31,39 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
       initial={{ opacity: 0, y: -20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
-      whileHover={{ scale: 1.02 }}
+      whileHover={{ scale: 1.02, y: -4 }}
     >
       <Card
-        className={`p-5 transition-all duration-300 relative overflow-hidden ${
+        className={`p-5 transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
           isNew 
-            ? "border-accent shadow-lg shadow-accent/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/5 before:to-transparent" 
-            : "border-border hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10"
+            ? "border-accent shadow-xl shadow-accent/30 animate-glow-pulse before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/10 before:via-accent/5 before:to-transparent" 
+            : "border-border hover:border-accent/50 hover:shadow-xl hover:shadow-accent/20"
         }`}
       >
+        {isNew && (
+          <motion.div
+            className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-accent to-transparent"
+            initial={{ x: "-100%" }}
+            animate={{ x: "100%" }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+        
         <div className="flex items-start justify-between gap-4 mb-4 relative z-10">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Warning weight="fill" className="w-5 h-5 text-accent flex-shrink-0 animate-pulse" />
-            <Badge className={`${config.color} border flex-shrink-0 font-semibold`}>
+            <motion.div
+              animate={{ 
+                rotate: isNew ? [0, 5, -5, 0] : 0,
+                scale: isNew ? [1, 1.1, 1] : 1
+              }}
+              transition={{ 
+                duration: 0.5,
+                repeat: isNew ? 3 : 0
+              }}
+            >
+              <Warning weight="fill" className="w-5 h-5 text-accent flex-shrink-0" />
+            </motion.div>
+            <Badge className={`${config.color} border flex-shrink-0 font-semibold shadow-sm`}>
               {config.label}
             </Badge>
             <span className="text-xs font-mono text-muted-foreground flex-shrink-0">
@@ -75,9 +95,9 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
 
               <motion.div 
                 className="space-y-3"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.2 }}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.2, duration: 0.4 }}
               >
                 <div>
                   <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
@@ -88,19 +108,22 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
                   </p>
                 </div>
 
-                <div>
+                <motion.div
+                  whileHover={{ x: 4 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                >
                   <div className="flex items-start gap-2">
                     <ArrowRight weight="bold" className="w-4 h-4 text-accent mt-1 flex-shrink-0" />
                     <div className="flex-1">
                       <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                         Recommandation
                       </p>
-                      <p className="text-sm text-accent-foreground bg-accent/15 px-3 py-2.5 rounded-lg border border-accent/20">
+                      <p className="text-sm text-accent-foreground bg-accent/15 px-3 py-2.5 rounded-lg border border-accent/30 shadow-sm">
                         {incident.analysis.recommendation}
                       </p>
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 <div className="flex items-center gap-4 pt-2">
                   <ImpactMetric type="time" value={incident.analysis.impactTime} />

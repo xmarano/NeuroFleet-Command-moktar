@@ -69,22 +69,39 @@ export function IncidentMap({ incidents, onIncidentClick }: IncidentMapProps) {
         className: "custom-marker",
         html: `
           <div style="
-            background: radial-gradient(circle, ${color} 0%, ${color}CC 50%, ${color}66 100%);
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            border: 3px solid ${color}44;
-            box-shadow: 
-              0 0 20px ${color}80,
-              0 0 40px ${color}40,
-              inset 0 0 10px ${color}AA;
-            animation: pulse 2s ease-in-out infinite;
-            cursor: pointer;
-            transition: all 0.3s ease;
-          "></div>
+            position: relative;
+            width: 24px;
+            height: 24px;
+          ">
+            <div style="
+              position: absolute;
+              inset: 0;
+              background: radial-gradient(circle, ${color} 0%, ${color}CC 50%, ${color}66 100%);
+              width: 24px;
+              height: 24px;
+              border-radius: 50%;
+              border: 3px solid ${color}66;
+              box-shadow: 
+                0 0 20px ${color}AA,
+                0 0 40px ${color}66,
+                0 0 60px ${color}33,
+                inset 0 0 10px ${color}FF;
+              animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+              cursor: pointer;
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              backdrop-filter: blur(2px);
+            "></div>
+            <div style="
+              position: absolute;
+              inset: 2px;
+              background: radial-gradient(circle at 40% 40%, ${color}FF 0%, ${color}AA 100%);
+              border-radius: 50%;
+              animation: glow 3s ease-in-out infinite alternate;
+            "></div>
+          </div>
         `,
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
+        iconSize: [24, 24],
+        iconAnchor: [12, 12]
       })
 
       const marker = L.marker([incident.locationLat, incident.locationLng], {
@@ -125,7 +142,7 @@ export function IncidentMap({ incidents, onIncidentClick }: IncidentMapProps) {
 
   return (
     <div className="relative h-full w-full">
-      <div ref={mapRef} className="absolute inset-0 rounded-lg overflow-hidden" />
+      <div ref={mapRef} className="absolute inset-0 rounded-lg overflow-hidden shadow-2xl" />
       <style>{`
         @keyframes pulse {
           0%, 100% { 
@@ -133,13 +150,40 @@ export function IncidentMap({ incidents, onIncidentClick }: IncidentMapProps) {
             opacity: 1; 
           }
           50% { 
-            transform: scale(1.15); 
-            opacity: 0.85; 
+            transform: scale(1.2); 
+            opacity: 0.8; 
           }
         }
-        .custom-marker:hover > div {
-          transform: scale(1.3) !important;
-          filter: brightness(1.2);
+        @keyframes glow {
+          0% {
+            opacity: 0.6;
+            filter: brightness(1);
+          }
+          100% {
+            opacity: 1;
+            filter: brightness(1.4);
+          }
+        }
+        .custom-marker:hover > div > div:first-child {
+          transform: scale(1.4) !important;
+          filter: brightness(1.3);
+          box-shadow: 
+            0 0 30px currentColor,
+            0 0 50px currentColor,
+            0 0 70px currentColor !important;
+        }
+        .leaflet-popup {
+          animation: popupFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        @keyframes popupFadeIn {
+          from {
+            opacity: 0;
+            transform: translateY(-10px) scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
         }
       `}</style>
     </div>
