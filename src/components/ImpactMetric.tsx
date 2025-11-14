@@ -20,7 +20,7 @@ export function ImpactMetric({ type, value }: ImpactMetricProps) {
 
   return (
     <motion.div 
-      className={`flex items-center gap-2 px-3 py-2 rounded-lg border ${colorClass} shadow-sm`}
+      className={`flex items-center gap-1.5 md:gap-2 px-2 py-1.5 md:px-3 md:py-2 rounded-lg border ${colorClass} shadow-sm`}
       whileHover={{ scale: 1.05, y: -2 }}
       transition={{ type: "spring", stiffness: 400, damping: 10 }}
     >
@@ -34,9 +34,9 @@ export function ImpactMetric({ type, value }: ImpactMetricProps) {
           ease: "easeInOut"
         }}
       >
-        <Icon weight="bold" className="w-4 h-4 flex-shrink-0" />
+        <Icon weight="bold" className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
       </motion.div>
-      <span className="text-sm font-mono font-semibold">
+      <span className="text-[10px] md:text-sm font-mono font-semibold">
         {value}
       </span>
     </motion.div>

@@ -34,7 +34,7 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
       whileHover={{ scale: 1.02, y: -4 }}
     >
       <Card
-        className={`p-5 transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
+        className={`p-3 md:p-5 transition-all duration-300 relative overflow-hidden backdrop-blur-sm ${
           isNew 
             ? "border-accent shadow-xl shadow-accent/30 animate-glow-pulse before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/10 before:via-accent/5 before:to-transparent" 
             : "border-border hover:border-accent/50 hover:shadow-xl hover:shadow-accent/20"
@@ -49,8 +49,8 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
           />
         )}
         
-        <div className="flex items-start justify-between gap-4 mb-4 relative z-10">
-          <div className="flex items-center gap-2 flex-1 min-w-0">
+        <div className="flex items-start justify-between gap-2 md:gap-4 mb-3 md:mb-4 relative z-10">
+          <div className="flex items-center gap-1.5 md:gap-2 flex-1 min-w-0">
             <motion.div
               animate={{ 
                 rotate: isNew ? [0, 5, -5, 0] : 0,
@@ -61,28 +61,28 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
                 repeat: isNew ? 3 : 0
               }}
             >
-              <Warning weight="fill" className="w-5 h-5 text-accent flex-shrink-0" />
+              <Warning weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent flex-shrink-0" />
             </motion.div>
-            <Badge className={`${config.color} border flex-shrink-0 font-semibold shadow-sm`}>
+            <Badge className={`${config.color} border flex-shrink-0 font-semibold shadow-sm text-[10px] md:text-xs px-1.5 md:px-2 py-0.5`}>
               {config.label}
             </Badge>
-            <span className="text-xs font-mono text-muted-foreground flex-shrink-0">
+            <span className="text-[10px] md:text-xs font-mono text-muted-foreground flex-shrink-0 truncate">
               {timestamp}
             </span>
           </div>
         </div>
 
-        <div className="space-y-4 relative z-10">
+        <div className="space-y-3 md:space-y-4 relative z-10">
           <div>
-            <div className="flex items-center gap-2 mb-2">
-              <MapPin weight="fill" className="w-4 h-4 text-muted-foreground" />
-              <p className="text-sm font-semibold text-foreground leading-relaxed">
+            <div className="flex items-center gap-1.5 md:gap-2 mb-1.5 md:mb-2">
+              <MapPin weight="fill" className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground flex-shrink-0" />
+              <p className="text-xs md:text-sm font-semibold text-foreground leading-relaxed">
                 {incident.description}
               </p>
             </div>
             {incident.vehicleName && (
-              <div className="flex items-center gap-2 ml-6 text-xs text-muted-foreground">
-                <Truck weight="fill" className="w-3 h-3" />
+              <div className="flex items-center gap-1.5 md:gap-2 ml-4 md:ml-6 text-[10px] md:text-xs text-muted-foreground">
+                <Truck weight="fill" className="w-2.5 h-2.5 md:w-3 md:h-3" />
                 <span>{incident.vehicleName}</span>
                 {incident.driverName && <span>• {incident.driverName}</span>}
               </div>
@@ -94,16 +94,16 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
               <Separator className="bg-border/60" />
 
               <motion.div 
-                className="space-y-3"
+                className="space-y-2 md:space-y-3"
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.4 }}
               >
                 <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 md:mb-2">
                     Analyse
                   </p>
-                  <p className="text-sm text-foreground/90 leading-relaxed">
+                  <p className="text-xs md:text-sm text-foreground/90 leading-relaxed">
                     {incident.analysis.explanation}
                   </p>
                 </div>
@@ -112,20 +112,20 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
                   whileHover={{ x: 4 }}
                   transition={{ type: "spring", stiffness: 400, damping: 10 }}
                 >
-                  <div className="flex items-start gap-2">
-                    <ArrowRight weight="bold" className="w-4 h-4 text-accent mt-1 flex-shrink-0" />
+                  <div className="flex items-start gap-1.5 md:gap-2">
+                    <ArrowRight weight="bold" className="w-3 h-3 md:w-4 md:h-4 text-accent mt-1 flex-shrink-0" />
                     <div className="flex-1">
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                      <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-1 md:mb-2">
                         Recommandation
                       </p>
-                      <p className="text-sm text-accent-foreground bg-accent/15 px-3 py-2.5 rounded-lg border border-accent/30 shadow-sm">
+                      <p className="text-xs md:text-sm text-accent-foreground bg-accent/15 px-2 py-1.5 md:px-3 md:py-2.5 rounded-lg border border-accent/30 shadow-sm">
                         {incident.analysis.recommendation}
                       </p>
                     </div>
                   </div>
                 </motion.div>
 
-                <div className="flex items-center gap-4 pt-2">
+                <div className="flex items-center gap-2 md:gap-4 pt-1 md:pt-2">
                   <ImpactMetric type="time" value={incident.analysis.impactTime} />
                   <ImpactMetric type="co2" value={incident.analysis.impactCo2} />
                 </div>

@@ -58,7 +58,7 @@ export function StatsOverview({ incidents }: StatsOverviewProps) {
   ]
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
       {stats.map((stat, index) => (
         <motion.div
           key={stat.label}
@@ -67,23 +67,23 @@ export function StatsOverview({ incidents }: StatsOverviewProps) {
           transition={{ duration: 0.4, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
           whileHover={{ y: -4, scale: 1.02 }}
         >
-          <Card className="p-4 hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 backdrop-blur-sm relative overflow-hidden group">
+          <Card className="p-3 md:p-4 hover:shadow-lg hover:shadow-accent/10 transition-all duration-300 backdrop-blur-sm relative overflow-hidden group">
             <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
             <div className="relative z-10">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              <div className="flex items-center justify-between mb-1.5 md:mb-2">
+                <span className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wide truncate pr-1">
                   {stat.label}
                 </span>
                 <motion.div 
-                  className={`p-2 rounded-lg ${stat.bgColor}`}
+                  className={`p-1.5 md:p-2 rounded-lg ${stat.bgColor} flex-shrink-0`}
                   whileHover={{ rotate: 360, scale: 1.1 }}
                   transition={{ duration: 0.5, ease: "easeInOut" }}
                 >
-                  <stat.icon weight="bold" className={`w-4 h-4 ${stat.color}`} />
+                  <stat.icon weight="bold" className={`w-3 h-3 md:w-4 md:h-4 ${stat.color}`} />
                 </motion.div>
               </div>
               <motion.div 
-                className={`text-2xl font-bold font-mono ${stat.color}`}
+                className={`text-lg md:text-2xl font-bold font-mono ${stat.color}`}
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ delay: index * 0.1 + 0.2, duration: 0.4 }}

@@ -37,11 +37,11 @@ export function FilterControls({
   filteredCount
 }: FilterControlsProps) {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-2 md:gap-3">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Funnel weight="bold" className="w-4 h-4 text-muted-foreground" />
-          <span className="text-sm font-semibold text-muted-foreground">Filtres</span>
+          <Funnel weight="bold" className="w-3 h-3 md:w-4 md:h-4 text-muted-foreground" />
+          <span className="text-xs md:text-sm font-semibold text-muted-foreground">Filtres</span>
         </div>
         {selectedType !== "all" && (
           <motion.div
@@ -53,7 +53,7 @@ export function FilterControls({
               variant="ghost"
               size="sm"
               onClick={() => onTypeChange("all")}
-              className="h-7 text-xs hover:bg-accent/10 hover:text-accent"
+              className="h-6 md:h-7 text-[10px] md:text-xs hover:bg-accent/10 hover:text-accent px-2"
             >
               Réinitialiser
             </Button>
@@ -61,7 +61,7 @@ export function FilterControls({
         )}
       </div>
 
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-1.5 md:gap-2">
         {INCIDENT_TYPES.map((type, index) => (
           <motion.div
             key={type.value}
@@ -72,7 +72,7 @@ export function FilterControls({
             whileTap={{ scale: 0.95 }}
           >
             <Badge
-              className={`cursor-pointer border transition-all ${
+              className={`cursor-pointer border transition-all text-[10px] md:text-xs px-2 py-0.5 md:px-2.5 md:py-1 ${
                 selectedType === type.value
                   ? type.color + " border-current shadow-md shadow-current/20"
                   : "bg-muted/50 text-muted-foreground border-border hover:bg-muted"
@@ -85,9 +85,9 @@ export function FilterControls({
         ))}
       </div>
 
-      <div className="flex items-center justify-between pt-2">
+      <div className="flex items-center justify-between pt-1 md:pt-2">
         <Select value={sortBy} onValueChange={(value) => onSortChange(value as "newest" | "oldest")}>
-          <SelectTrigger className="w-[180px] h-8 hover:border-accent/50 transition-colors">
+          <SelectTrigger className="w-[140px] md:w-[180px] h-7 md:h-8 text-xs md:text-sm hover:border-accent/50 transition-colors">
             <SelectValue />
           </SelectTrigger>
           <SelectContent>
@@ -97,13 +97,13 @@ export function FilterControls({
         </Select>
 
         <motion.span 
-          className="text-xs text-muted-foreground font-mono"
+          className="text-[10px] md:text-xs text-muted-foreground font-mono"
           key={`${filteredCount}-${totalCount}`}
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          {filteredCount} / {totalCount} incidents
+          {filteredCount} / {totalCount}
         </motion.span>
       </div>
     </div>

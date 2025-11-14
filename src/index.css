@@ -75,6 +75,12 @@ body {
     linear-gradient(to bottom, oklch(0.32 0.025 250 / 0.03) 1px, transparent 1px);
   background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
   background-position: 0 0, 0 0, 0 0, 0 0;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
 .leaflet-container {
@@ -83,6 +89,7 @@ body {
   box-shadow: 
     inset 0 0 60px -20px oklch(0.25 0.08 250 / 0.3),
     0 8px 32px -8px rgba(0, 0, 0, 0.4);
+  touch-action: pan-x pan-y;
 }
 
 .leaflet-popup-content-wrapper {

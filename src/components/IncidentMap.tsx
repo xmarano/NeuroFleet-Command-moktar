@@ -27,7 +27,10 @@ export function IncidentMap({ incidents, onIncidentClick }: IncidentMapProps) {
       center: [46.603354, 1.888334],
       zoom: 6,
       zoomControl: true,
-      attributionControl: false
+      attributionControl: false,
+      touchZoom: true,
+      dragging: true,
+      scrollWheelZoom: false
     })
 
     L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {

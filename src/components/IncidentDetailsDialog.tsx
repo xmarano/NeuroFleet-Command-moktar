@@ -32,78 +32,78 @@ export function IncidentDetailsDialog({ incident, open, onOpenChange }: Incident
   
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-2xl backdrop-blur-xl bg-card/95 border-border/50 shadow-2xl">
+      <DialogContent className="max-w-2xl backdrop-blur-xl bg-card/95 border-border/50 shadow-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center gap-3 mb-2">
+          <div className="flex items-center gap-2 md:gap-3 mb-2">
             <motion.div
               initial={{ rotate: 0, scale: 1 }}
               animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.1, 1] }}
               transition={{ duration: 0.6, ease: "easeOut" }}
             >
-              <Warning weight="fill" className="w-6 h-6 text-accent" />
+              <Warning weight="fill" className="w-5 h-5 md:w-6 md:h-6 text-accent flex-shrink-0" />
             </motion.div>
-            <DialogTitle className="text-xl">Détails de l'incident</DialogTitle>
+            <DialogTitle className="text-lg md:text-xl">Détails de l'incident</DialogTitle>
           </div>
-          <DialogDescription>
+          <DialogDescription className="text-xs md:text-sm">
             Informations complètes et analyse détaillée de l'incident
           </DialogDescription>
         </DialogHeader>
 
         <motion.div 
-          className="space-y-4 mt-4"
+          className="space-y-3 md:space-y-4 mt-3 md:mt-4"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="flex items-center gap-2">
-            <Badge className={`${config.color} border shadow-sm`}>
+          <div className="flex items-center gap-2 flex-wrap">
+            <Badge className={`${config.color} border shadow-sm text-xs`}>
               {config.label}
             </Badge>
-            <span className="text-xs font-mono text-muted-foreground">
+            <span className="text-[10px] md:text-xs font-mono text-muted-foreground">
               ID: {incident.id.substring(0, 8)}...
             </span>
           </div>
 
-          <div className="space-y-3">
+          <div className="space-y-2 md:space-y-3">
             <motion.div 
-              className="flex items-start gap-3"
+              className="flex items-start gap-2 md:gap-3"
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
             >
-              <MapPin weight="fill" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-muted-foreground mb-1">Description</p>
-                <p className="text-base text-foreground">{incident.description}</p>
+              <MapPin weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+              <div className="min-w-0 flex-1">
+                <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Description</p>
+                <p className="text-sm md:text-base text-foreground">{incident.description}</p>
               </div>
             </motion.div>
 
-            <div className="grid grid-cols-2 gap-3">
+            <div className="grid grid-cols-2 gap-2 md:gap-3">
               <motion.div 
-                className="flex items-start gap-3"
+                className="flex items-start gap-2 md:gap-3"
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                <Calendar weight="fill" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-semibold text-muted-foreground mb-1">Date</p>
-                  <p className="text-base text-foreground">
+                <Calendar weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Date</p>
+                  <p className="text-sm md:text-base text-foreground truncate">
                     {createdDate.toLocaleDateString("fr-FR")}
                   </p>
                 </div>
               </motion.div>
 
               <motion.div 
-                className="flex items-start gap-3"
+                className="flex items-start gap-2 md:gap-3"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.15 }}
               >
-                <Clock weight="fill" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-semibold text-muted-foreground mb-1">Heure</p>
-                  <p className="text-base text-foreground">
+                <Clock weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+                <div className="min-w-0">
+                  <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Heure</p>
+                  <p className="text-sm md:text-base text-foreground truncate">
                     {createdDate.toLocaleTimeString("fr-FR")}
                   </p>
                 </div>
@@ -111,31 +111,31 @@ export function IncidentDetailsDialog({ incident, open, onOpenChange }: Incident
             </div>
 
             {incident.vehicleName && (
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2 md:gap-3">
                 <motion.div 
-                  className="flex items-start gap-3"
+                  className="flex items-start gap-2 md:gap-3"
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 0.2 }}
                 >
-                  <Truck weight="fill" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="text-sm font-semibold text-muted-foreground mb-1">Véhicule</p>
-                    <p className="text-base text-foreground">{incident.vehicleName}</p>
+                  <Truck weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Véhicule</p>
+                    <p className="text-sm md:text-base text-foreground truncate">{incident.vehicleName}</p>
                   </div>
                 </motion.div>
 
                 {incident.driverName && (
                   <motion.div 
-                    className="flex items-start gap-3"
+                    className="flex items-start gap-2 md:gap-3"
                     initial={{ opacity: 0, x: 20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.2 }}
                   >
-                    <User weight="fill" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-sm font-semibold text-muted-foreground mb-1">Chauffeur</p>
-                      <p className="text-base text-foreground">{incident.driverName}</p>
+                    <User weight="fill" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+                    <div className="min-w-0">
+                      <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Chauffeur</p>
+                      <p className="text-sm md:text-base text-foreground truncate">{incident.driverName}</p>
                     </div>
                   </motion.div>
                 )}
@@ -143,15 +143,15 @@ export function IncidentDetailsDialog({ incident, open, onOpenChange }: Incident
             )}
 
             <motion.div 
-              className="flex items-start gap-3"
+              className="flex items-start gap-2 md:gap-3"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.25 }}
             >
-              <MapPin weight="bold" className="w-5 h-5 text-accent mt-0.5 flex-shrink-0" />
-              <div>
-                <p className="text-sm font-semibold text-muted-foreground mb-1">Coordonnées GPS</p>
-                <p className="text-sm text-foreground font-mono">
+              <MapPin weight="bold" className="w-4 h-4 md:w-5 md:h-5 text-accent mt-0.5 flex-shrink-0" />
+              <div className="min-w-0">
+                <p className="text-xs md:text-sm font-semibold text-muted-foreground mb-1">Coordonnées GPS</p>
+                <p className="text-xs md:text-sm text-foreground font-mono break-all">
                   {incident.locationLat.toFixed(4)}°N, {incident.locationLng.toFixed(4)}°E
                 </p>
               </div>
@@ -163,26 +163,26 @@ export function IncidentDetailsDialog({ incident, open, onOpenChange }: Incident
               <Separator />
               
               <motion.div 
-                className="space-y-3"
+                className="space-y-2 md:space-y-3"
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.3 }}
               >
-                <h3 className="text-lg font-semibold flex items-center gap-2">
-                  <ArrowRight weight="bold" className="w-5 h-5 text-accent" />
+                <h3 className="text-base md:text-lg font-semibold flex items-center gap-2">
+                  <ArrowRight weight="bold" className="w-4 h-4 md:w-5 md:h-5 text-accent" />
                   Analyse IA
                 </h3>
 
-                <div className="bg-card/50 p-4 rounded-lg space-y-3 border border-border/50 backdrop-blur-sm">
+                <div className="bg-card/50 p-3 md:p-4 rounded-lg space-y-2 md:space-y-3 border border-border/50 backdrop-blur-sm">
                   <motion.div
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.35 }}
                   >
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                    <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
                       Explication
                     </p>
-                    <p className="text-sm text-foreground leading-relaxed">
+                    <p className="text-xs md:text-sm text-foreground leading-relaxed">
                       {incident.analysis.explanation}
                     </p>
                   </motion.div>
@@ -192,42 +192,42 @@ export function IncidentDetailsDialog({ incident, open, onOpenChange }: Incident
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.4 }}
                   >
-                    <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
+                    <p className="text-[10px] md:text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-2">
                       Recommandation
                     </p>
-                    <p className="text-sm text-accent-foreground bg-accent/10 px-3 py-2 rounded border border-accent/30 shadow-sm">
+                    <p className="text-xs md:text-sm text-accent-foreground bg-accent/10 px-2 py-1.5 md:px-3 md:py-2 rounded border border-accent/30 shadow-sm">
                       {incident.analysis.recommendation}
                     </p>
                   </motion.div>
 
-                  <div className="grid grid-cols-2 gap-4 pt-2">
+                  <div className="grid grid-cols-2 gap-2 md:gap-4 pt-2">
                     <motion.div 
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-1.5 md:gap-2"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.45 }}
                       whileHover={{ scale: 1.05 }}
                     >
-                      <Clock weight="bold" className="w-5 h-5 text-amber-400" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">Impact Temps</p>
-                        <p className="text-base font-mono font-semibold text-amber-400">
+                      <Clock weight="bold" className="w-4 h-4 md:w-5 md:h-5 text-amber-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] md:text-xs text-muted-foreground">Impact Temps</p>
+                        <p className="text-sm md:text-base font-mono font-semibold text-amber-400 truncate">
                           {incident.analysis.impactTime}
                         </p>
                       </div>
                     </motion.div>
 
                     <motion.div 
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-1.5 md:gap-2"
                       initial={{ opacity: 0, scale: 0.8 }}
                       animate={{ opacity: 1, scale: 1 }}
                       transition={{ delay: 0.5 }}
                       whileHover={{ scale: 1.05 }}
                     >
-                      <Leaf weight="bold" className="w-5 h-5 text-green-400" />
-                      <div>
-                        <p className="text-xs text-muted-foreground">Impact CO₂</p>
-                        <p className="text-base font-mono font-semibold text-green-400">
+                      <Leaf weight="bold" className="w-4 h-4 md:w-5 md:h-5 text-green-400 flex-shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-[10px] md:text-xs text-muted-foreground">Impact CO₂</p>
+                        <p className="text-sm md:text-base font-mono font-semibold text-green-400 truncate">
                           {incident.analysis.impactCo2}
                         </p>
                       </div>
