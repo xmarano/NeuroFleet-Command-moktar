@@ -11,8 +11,7 @@ import { Button } from "./components/ui/button"
 import { Separator } from "./components/ui/separator"
 import { Skeleton } from "./components/ui/skeleton"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./components/ui/sheet"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./components/ui/tabs"
-import { Lightning, Trash, Download, List, MapTrifold, ChartBar } from "@phosphor-icons/react"
+import { Lightning, Trash, Download, List } from "@phosphor-icons/react"
 import { useIncidentStream } from "./hooks/use-incident-stream"
 import { useKeyboardShortcuts } from "./hooks/use-keyboard-shortcuts"
 import { useIsMobile } from "./hooks/use-mobile"
@@ -28,7 +27,6 @@ function App() {
   const [sortBy, setSortBy] = useState<"newest" | "oldest">("newest")
   const [selectedIncident, setSelectedIncident] = useState<IncidentWithAnalysis | null>(null)
   const [isDetailsOpen, setIsDetailsOpen] = useState(false)
-  const [mobileView, setMobileView] = useState<"map" | "analysis">("map")
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   useKeyboardShortcuts([
@@ -117,7 +115,7 @@ function App() {
   }
 
   return (
-    <div className="h-screen w-screen bg-background text-foreground overflow-hidden flex flex-col">
+    <div className="min-h-screen md:h-screen w-screen bg-background text-foreground flex flex-col md:overflow-hidden">
       <motion.header 
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -271,142 +269,107 @@ function App() {
       </motion.div>
 
       {isMobile ? (
-        <div className="flex-1 min-h-0 flex flex-col overflow-hidden">
-          <Tabs value={mobileView} onValueChange={(v) => setMobileView(v as "map" | "analysis")} className="flex-1 flex flex-col min-h-0">
-            <TabsList className="mx-3 mt-3 grid w-auto grid-cols-2 flex-shrink-0">
-              <TabsTrigger value="map" className="gap-2">
-                <MapTrifold weight="fill" className="w-4 h-4" />
-                Carte
-              </TabsTrigger>
-              <TabsTrigger value="analysis" className="gap-2">
-                <ChartBar weight="fill" className="w-4 h-4" />
-                Analyse ({incidentsWithAnalysis.length})
-              </TabsTrigger>
-            </TabsList>
+        <div className="flex-1">
+          <div className="p-3 space-y-4 pb-6">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              className="rounded-lg overflow-hidden"
+              style={{ height: '300px' }}
+            >
+              <IncidentMap 
+                incidents={filteredAndSortedIncidents} 
+                onIncidentClick={handleIncidentClick}
+              />
+            </motion.div>
 
-            <TabsContent value="map" className="flex-1 min-h-0 mt-3 px-3 pb-3 overflow-hidden" forceMount>
-              <AnimatePresence mode="wait">
-                {mobileView === "map" && (
-                  <motion.div
-                    key="map"
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: -20 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full rounded-lg overflow-hidden"
+            <div className="border-b border-border pb-3">
+              <FilterControls
+                selectedType={selectedType}
+                onTypeChange={setSelectedType}
+                sortBy={sortBy}
+                onSortChange={setSortBy}
+                totalCount={incidentsList.length}
+                filteredCount={filteredAndSortedIncidents.length}
+              />
+            </div>
+
+            <div className="space-y-3">
+              {pendingIncidents.length > 0 && (
+                <div className="space-y-3">
+                  {pendingIncidents.map((incident) => (
+                    <div key={incident.id} className="space-y-2">
+                      <div className="p-4 border border-border rounded-lg bg-card/50 animate-shimmer backdrop-blur-sm">
+                        <div className="flex items-center gap-2 mb-3">
+                          <Skeleton className="h-4 w-4 rounded-full" />
+                          <Skeleton className="h-5 w-16 rounded-md" />
+                          <Skeleton className="h-3 w-12 rounded-md" />
+                        </div>
+                        <Skeleton className="h-3 w-full mb-2 rounded-md" />
+                        <Skeleton className="h-3 w-3/4 rounded-md" />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {incidentsWithAnalysis.length > 0 ? (
+                incidentsWithAnalysis.map((incident, index) => (
+                  <motion.div 
+                    key={incident.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ 
+                      duration: 0.4, 
+                      delay: index * 0.05,
+                      ease: [0.16, 1, 0.3, 1]
+                    }}
+                    onClick={() => handleIncidentClick(incident)}
+                    className="cursor-pointer"
                   >
-                    <IncidentMap 
-                      incidents={filteredAndSortedIncidents} 
-                      onIncidentClick={handleIncidentClick}
+                    <AnalysisCard
+                      incident={incident}
+                      isNew={newIncidentIds.has(incident.id)}
                     />
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </TabsContent>
-
-            <TabsContent value="analysis" className="flex-1 min-h-0 mt-0 overflow-hidden" forceMount>
-              <AnimatePresence mode="wait">
-                {mobileView === "analysis" && (
-                  <motion.div
-                    key="analysis"
-                    initial={{ opacity: 0, x: 20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 20 }}
-                    transition={{ duration: 0.3 }}
-                    className="h-full flex flex-col"
+                ))
+              ) : (
+                !pendingIncidents.length && (
+                  <motion.div 
+                    className="flex flex-col items-center justify-center py-12 text-center"
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
                   >
-                    <div className="border-b border-border px-3 py-3 bg-card/50 backdrop-blur-sm flex-shrink-0">
-                      <FilterControls
-                        selectedType={selectedType}
-                        onTypeChange={setSelectedType}
-                        sortBy={sortBy}
-                        onSortChange={setSortBy}
-                        totalCount={incidentsList.length}
-                        filteredCount={filteredAndSortedIncidents.length}
-                      />
-                    </div>
-
-                    <ScrollArea className="flex-1">
-                      <div className="p-3 space-y-3">
-                        {pendingIncidents.length > 0 && (
-                          <div className="space-y-3">
-                            {pendingIncidents.map((incident) => (
-                              <div key={incident.id} className="space-y-2">
-                                <div className="p-4 border border-border rounded-lg bg-card/50 animate-shimmer backdrop-blur-sm">
-                                  <div className="flex items-center gap-2 mb-3">
-                                    <Skeleton className="h-4 w-4 rounded-full" />
-                                    <Skeleton className="h-5 w-16 rounded-md" />
-                                    <Skeleton className="h-3 w-12 rounded-md" />
-                                  </div>
-                                  <Skeleton className="h-3 w-full mb-2 rounded-md" />
-                                  <Skeleton className="h-3 w-3/4 rounded-md" />
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-
-                        {incidentsWithAnalysis.length > 0 ? (
-                          incidentsWithAnalysis.map((incident, index) => (
-                            <motion.div 
-                              key={incident.id}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ 
-                                duration: 0.4, 
-                                delay: index * 0.05,
-                                ease: [0.16, 1, 0.3, 1]
-                              }}
-                              onClick={() => handleIncidentClick(incident)}
-                              className="cursor-pointer"
-                            >
-                              <AnalysisCard
-                                incident={incident}
-                                isNew={newIncidentIds.has(incident.id)}
-                              />
-                            </motion.div>
-                          ))
-                        ) : (
-                          !pendingIncidents.length && (
-                            <motion.div 
-                              className="flex flex-col items-center justify-center py-12 text-center"
-                              initial={{ opacity: 0, scale: 0.95 }}
-                              animate={{ opacity: 1, scale: 1 }}
-                              transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-                            >
-                              <motion.div
-                                animate={{ 
-                                  y: [0, -10, 0],
-                                  opacity: [0.5, 0.8, 0.5]
-                                }}
-                                transition={{ 
-                                  duration: 3,
-                                  repeat: Infinity,
-                                  ease: "easeInOut"
-                                }}
-                              >
-                                <Lightning weight="thin" className="w-16 h-16 text-muted-foreground/50 mb-4" />
-                              </motion.div>
-                              <h3 className="text-base font-semibold mb-2">
-                                {selectedType !== "all" 
-                                  ? "Aucun incident de ce type"
-                                  : "En attente d'incidents..."}
-                              </h3>
-                              <p className="text-sm text-muted-foreground max-w-md leading-relaxed px-4">
-                                {selectedType !== "all"
-                                  ? "Essayez de sélectionner un autre type d'incident."
-                                  : "Le système surveille votre flotte en temps réel."}
-                              </p>
-                            </motion.div>
-                          )
-                        )}
-                      </div>
-                    </ScrollArea>
+                    <motion.div
+                      animate={{ 
+                        y: [0, -10, 0],
+                        opacity: [0.5, 0.8, 0.5]
+                      }}
+                      transition={{ 
+                        duration: 3,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                      }}
+                    >
+                      <Lightning weight="thin" className="w-16 h-16 text-muted-foreground/50 mb-4" />
+                    </motion.div>
+                    <h3 className="text-base font-semibold mb-2">
+                      {selectedType !== "all" 
+                        ? "Aucun incident de ce type"
+                        : "En attente d'incidents..."}
+                    </h3>
+                    <p className="text-sm text-muted-foreground max-w-md leading-relaxed px-4">
+                      {selectedType !== "all"
+                        ? "Essayez de sélectionner un autre type d'incident."
+                        : "Le système surveille votre flotte en temps réel."}
+                    </p>
                   </motion.div>
-                )}
-              </AnimatePresence>
-            </TabsContent>
-          </Tabs>
+                )
+              )}
+            </div>
+          </div>
         </div>
       ) : (
         <div className="flex-1 grid grid-cols-1 lg:grid-cols-2 gap-0 overflow-hidden min-h-0">
