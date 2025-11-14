@@ -1,10 +1,11 @@
 import { useEffect, useRef } from "react"
 import L from "leaflet"
 import "leaflet/dist/leaflet.css"
-import type { Incident } from "@/lib/types"
+import type { Incident, IncidentWithAnalysis } from "@/lib/types"
 
 interface IncidentMapProps {
   incidents: Incident[]
+  onIncidentClick?: (incident: IncidentWithAnalysis) => void
 }
 
 const INCIDENT_COLORS = {
@@ -14,7 +15,7 @@ const INCIDENT_COLORS = {
   behavior: "#a855f7"
 }
 
-export function IncidentMap({ incidents }: IncidentMapProps) {
+export function IncidentMap({ incidents, onIncidentClick }: IncidentMapProps) {
   const mapRef = useRef<HTMLDivElement>(null)
   const mapInstanceRef = useRef<L.Map | null>(null)
   const markersRef = useRef<Map<string, L.Marker>>(new Map())
@@ -68,22 +69,33 @@ export function IncidentMap({ incidents }: IncidentMapProps) {
         className: "custom-marker",
         html: `
           <div style="
-            background-color: ${color};
-            width: 24px;
-            height: 24px;
+            background: radial-gradient(circle, ${color} 0%, ${color}CC 50%, ${color}66 100%);
+            width: 20px;
+            height: 20px;
             border-radius: 50%;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 0 10px ${color}80;
+            border: 3px solid ${color}44;
+            box-shadow: 
+              0 0 20px ${color}80,
+              0 0 40px ${color}40,
+              inset 0 0 10px ${color}AA;
             animation: pulse 2s ease-in-out infinite;
+            cursor: pointer;
+            transition: all 0.3s ease;
           "></div>
         `,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12]
+        iconSize: [20, 20],
+        iconAnchor: [10, 10]
       })
 
       const marker = L.marker([incident.locationLat, incident.locationLng], {
         icon
       }).addTo(map)
+
+      marker.on("click", () => {
+        if (onIncidentClick) {
+          onIncidentClick(incident as IncidentWithAnalysis)
+        }
+      })
 
       const popupContent = `
         <div style="font-family: 'Inter', sans-serif; min-width: 200px;">
@@ -116,8 +128,18 @@ export function IncidentMap({ incidents }: IncidentMapProps) {
       <div ref={mapRef} className="absolute inset-0 rounded-lg overflow-hidden" />
       <style>{`
         @keyframes pulse {
-          0%, 100% { transform: scale(1); opacity: 1; }
-          50% { transform: scale(1.1); opacity: 0.8; }
+          0%, 100% { 
+            transform: scale(1); 
+            opacity: 1; 
+          }
+          50% { 
+            transform: scale(1.15); 
+            opacity: 0.85; 
+          }
+        }
+        .custom-marker:hover > div {
+          transform: scale(1.3) !important;
+          filter: brightness(1.2);
         }
       `}</style>
     </div>

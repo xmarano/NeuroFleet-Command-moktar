@@ -25,7 +25,7 @@ Réponds en JSON avec exactement ces 4 propriétés. Sois concis et professionne
     const parsed = JSON.parse(response)
     
     return {
-      id: `analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `analysis-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       incidentId: incident.id,
       explanation: parsed.explanation || "Analyse en cours...",
       recommendation: parsed.recommendation || "Recommandation en attente...",
@@ -37,7 +37,7 @@ Réponds en JSON avec exactement ces 4 propriétés. Sois concis et professionne
     console.error("AI analysis failed:", error)
     
     return {
-      id: `analysis-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `analysis-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`,
       incidentId: incident.id,
       explanation: "L'analyse automatique a rencontré une difficulté. Veuillez vérifier manuellement.",
       recommendation: "Contacter le chauffeur pour obtenir plus d'informations.",

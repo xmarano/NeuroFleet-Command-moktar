@@ -30,17 +30,20 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
     <motion.div
       initial={{ opacity: 0, y: -20, scale: 0.95 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      transition={{ duration: 0.4, ease: "easeOut" }}
+      transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+      whileHover={{ scale: 1.02 }}
     >
       <Card
-        className={`p-4 transition-all duration-150 hover:translate-y-[-2px] hover:shadow-lg ${
-          isNew ? "border-accent shadow-accent/20" : ""
+        className={`p-5 transition-all duration-300 relative overflow-hidden ${
+          isNew 
+            ? "border-accent shadow-lg shadow-accent/20 before:absolute before:inset-0 before:bg-gradient-to-r before:from-accent/5 before:to-transparent" 
+            : "border-border hover:border-accent/50 hover:shadow-lg hover:shadow-accent/10"
         }`}
       >
-        <div className="flex items-start justify-between gap-4 mb-3">
+        <div className="flex items-start justify-between gap-4 mb-4 relative z-10">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Warning weight="fill" className="w-5 h-5 text-accent flex-shrink-0" />
-            <Badge className={`${config.color} border flex-shrink-0`}>
+            <Warning weight="fill" className="w-5 h-5 text-accent flex-shrink-0 animate-pulse" />
+            <Badge className={`${config.color} border flex-shrink-0 font-semibold`}>
               {config.label}
             </Badge>
             <span className="text-xs font-mono text-muted-foreground flex-shrink-0">
@@ -49,11 +52,11 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
           </div>
         </div>
 
-        <div className="space-y-3">
+        <div className="space-y-4 relative z-10">
           <div>
-            <div className="flex items-center gap-2 mb-1">
+            <div className="flex items-center gap-2 mb-2">
               <MapPin weight="fill" className="w-4 h-4 text-muted-foreground" />
-              <p className="text-sm font-semibold text-foreground">
+              <p className="text-sm font-semibold text-foreground leading-relaxed">
                 {incident.description}
               </p>
             </div>
@@ -68,37 +71,42 @@ export function AnalysisCard({ incident, isNew }: AnalysisCardProps) {
 
           {incident.analysis && (
             <>
-              <Separator className="bg-border/50" />
+              <Separator className="bg-border/60" />
 
-              <div className="space-y-2">
+              <motion.div 
+                className="space-y-3"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.2 }}
+              >
                 <div>
-                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                     Analyse
                   </p>
-                  <p className="text-sm text-foreground leading-relaxed">
+                  <p className="text-sm text-foreground/90 leading-relaxed">
                     {incident.analysis.explanation}
                   </p>
                 </div>
 
                 <div>
                   <div className="flex items-start gap-2">
-                    <ArrowRight weight="bold" className="w-4 h-4 text-accent mt-0.5 flex-shrink-0" />
-                    <div>
-                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wide mb-1">
+                    <ArrowRight weight="bold" className="w-4 h-4 text-accent mt-1 flex-shrink-0" />
+                    <div className="flex-1">
+                      <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2">
                         Recommandation
                       </p>
-                      <p className="text-sm text-accent-foreground bg-accent/10 px-3 py-2 rounded">
+                      <p className="text-sm text-accent-foreground bg-accent/15 px-3 py-2.5 rounded-lg border border-accent/20">
                         {incident.analysis.recommendation}
                       </p>
                     </div>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4 pt-1">
+                <div className="flex items-center gap-4 pt-2">
                   <ImpactMetric type="time" value={incident.analysis.impactTime} />
                   <ImpactMetric type="co2" value={incident.analysis.impactCo2} />
                 </div>
-              </div>
+              </motion.div>
             </>
           )}
         </div>

@@ -1,30 +1,39 @@
 # NeuroFleet Command - Product Requirements Document
 
-A real-time logistics fleet operations "war room" dashboard that empowers operations managers to monitor vehicle incidents, receive AI-powered analysis, and make informed decisions instantly.
+A real-time logistics fleet operations command center dashboard that empowers operations managers to monitor vehicle incidents, receive AI-powered analysis, make informed decisions instantly, and interact with data through an elegant, prestigious interface.
 
 **Experience Qualities**:
-1. **Authoritative** - The interface should convey control and mastery, like a military command center where every piece of information matters
-2. **Responsive** - Real-time updates must feel instantaneous and fluid, creating a sense of living, breathing data that demands attention
-3. **Analytical** - The design should emphasize clarity and data hierarchy, allowing quick scanning and pattern recognition across multiple data streams
+1. **Authoritative** - The interface conveys control and mastery, like a high-tech command center where every piece of information is presented with precision and confidence
+2. **Responsive & Interactive** - Real-time updates feel instantaneous and fluid, with sophisticated animations and micro-interactions that create a sense of living, breathing data
+3. **Premium & Refined** - The design emphasizes attention to detail with polished animations, sophisticated color gradients, and thoughtful spacing that projects quality and prestige
 
 **Complexity Level**: Complex Application (advanced functionality, real-time data streams, AI integration, database operations)
 - This is a sophisticated operations dashboard requiring real-time subscriptions, AI analysis triggers, map visualization, and multiple data relationships. It simulates enterprise fleet management software.
 
 ## Essential Features
 
+### Statistics Dashboard
+- **Functionality**: Real-time KPI overview showing total incidents, critical incidents, cumulative CO2 impact, and time impact
+- **Purpose**: Provides at-a-glance operational metrics for quick decision-making and trend awareness
+- **Trigger**: Page load and real-time updates as incidents are analyzed
+- **Progression**: Dashboard loads → Stats calculate from incident data → Cards animate in with staggered timing → Values update in real-time
+- **Success Criteria**: All stats accurately reflect current data, animations are smooth, color coding matches severity levels
+
 ### Live Incident Map
-- **Functionality**: Interactive map displaying all fleet incidents with geographic markers
-- **Purpose**: Provides spatial awareness of problems across the fleet territory, enabling geographic pattern recognition
-- **Trigger**: Page load and real-time incident insertion
-- **Progression**: User views dashboard → Map loads all incidents from database → Markers appear on map → User clicks marker → Incident details display in popup
-- **Success Criteria**: All incidents appear as markers with correct coordinates, clicking reveals incident details, map is responsive and performant with 20+ markers
+- **Functionality**: Interactive map displaying all fleet incidents with enhanced, pulsing geographic markers that respond to user interaction
+- **Purpose**: Provides spatial awareness of problems across the fleet territory with premium visual feedback
+- **Trigger**: Page load, real-time incident insertion, and user clicks
+- **Progression**: User views dashboard → Map loads incidents → Enhanced markers pulse with glow effects → User hovers over marker (scale animation) → User clicks marker → Opens detailed dialog
+- **Success Criteria**: All incidents appear as enhanced markers, hover states are smooth, clicking opens incident details dialog, map is responsive with 20+ markers
+
+### Advanced Filtering & Sorting
 
 ### Real-Time Analysis Feed
-- **Functionality**: Live-updating stream of AI-analyzed incidents appearing as cards without page refresh
-- **Purpose**: Enables immediate awareness of new problems and AI recommendations, creating a "pulse" of fleet operations
-- **Trigger**: New analysis inserted into database via Supabase Realtime subscription
-- **Progression**: Mock script creates incident → Database trigger fires → AI analyzes incident → Analysis inserted → Feed detects new row → Card animates into view at top → User reads recommendation → User takes action
-- **Success Criteria**: New analysis cards appear within 2 seconds of incident creation, cards show all AI-generated fields (explanation, recommendation, impacts), animations are smooth, chronological order is maintained
+- **Functionality**: Live-updating stream of AI-analyzed incidents appearing as enhanced cards with sophisticated animations
+- **Purpose**: Enables immediate awareness of new problems and AI recommendations with premium visual presentation
+- **Trigger**: New incident creation and AI analysis completion
+- **Progression**: Incident created → AI analyzes → Analysis card animates in with scale and fade → Card features gradient highlights if new → Hover shows scale effect → Click opens details dialog
+- **Success Criteria**: New cards appear within 2 seconds, sophisticated animations are smooth (cubic-bezier easing), new incident highlighting fades after 3s, all fields display correctly
 
 ### AI-Powered Incident Analysis
 - **Functionality**: Automatic AI analysis of each incident generating explanations, recommendations, and impact estimates
