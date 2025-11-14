@@ -250,8 +250,9 @@ function App() {
               />
             </div>
 
-            <ScrollArea className="flex-1 relative z-10">
-              <div className="p-6 space-y-4">
+            <div className="flex-1 overflow-hidden relative z-10">
+              <ScrollArea className="h-full">
+                <div className="p-6 space-y-4">
                 {pendingIncidents.length > 0 && (
                   <div className="space-y-4">
                     {pendingIncidents.map((incident) => (
@@ -325,7 +326,8 @@ function App() {
                   )
                 )}
               </div>
-            </ScrollArea>
+              </ScrollArea>
+            </div>
           </motion.div>
         </div>
       </div>
