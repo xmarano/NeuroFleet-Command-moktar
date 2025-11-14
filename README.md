@@ -109,9 +109,14 @@ Le système simule un centre de commandement d'entreprise de type militaire ou a
 
 ## 📦 Prérequis
 
+### Installation Locale
 - **Node.js** : version 18.x ou supérieure
 - **npm** : version 9.x ou supérieure
 - **Git** : Pour cloner le repository
+
+### Installation avec Docker
+- **Docker** : version 20.x ou supérieure
+- **Docker Compose** : version 2.x ou supérieure (optionnel)
 
 ## 🚀 Installation
 
@@ -131,6 +136,75 @@ npm install
 ### 3. Configuration de l'Environnement
 
 Le projet utilise GitHub Spark pour l'IA. Assurez-vous d'avoir accès à l'environnement Spark.
+
+## 🐳 Installation avec Docker
+
+**Note importante**: Le Dockerfile par défaut nécessite que l'application soit d'abord construite localement. Si vous préférez une construction complète dans Docker, utilisez `Dockerfile.multistage` (peut nécessiter des ajustements selon votre environnement réseau).
+
+### Option 1 : Docker Compose (Recommandé)
+
+```bash
+# Cloner le repository
+git clone https://github.com/xmarano/NeuroFleet-Command-moktar.git
+cd NeuroFleet-Command-moktar
+
+# Installer les dépendances et construire l'application
+npm install
+npm run build
+
+# Démarrer l'application avec Docker
+docker-compose up -d
+
+# L'application sera disponible sur http://localhost:8080
+```
+
+### Option 2 : Docker Build Manuel
+
+```bash
+# Construire l'application localement
+npm install
+npm run build
+
+# Construire l'image Docker
+docker build -t neurofleet-command .
+
+# Exécuter le conteneur
+docker run -d -p 8080:80 --name neurofleet-command neurofleet-command
+
+# L'application sera disponible sur http://localhost:8080
+```
+
+### Option 3 : Build Multistage (Optionnel)
+
+Pour construire l'application directement dans Docker (sans build local) :
+
+```bash
+# Utiliser le Dockerfile multistage
+docker build -f Dockerfile.multistage -t neurofleet-command .
+
+# Exécuter le conteneur
+docker run -d -p 8080:80 --name neurofleet-command neurofleet-command
+```
+
+**Note**: Le build multistage peut rencontrer des problèmes de certificats SSL dans certains environnements réseau sécurisés.
+
+### Commandes Docker Utiles
+
+```bash
+# Voir les logs
+docker-compose logs -f
+# ou
+docker logs -f neurofleet-command
+
+# Arrêter l'application
+docker-compose down
+# ou
+docker stop neurofleet-command
+
+# Reconstruire après modifications
+npm run build
+docker-compose up -d --build
+```
 
 ## ⚙️ Configuration
 
@@ -338,6 +412,21 @@ function process(data) { ... }
 
 ```bash
 npm run build
+```
+
+### Déploiement avec Docker
+
+Le déploiement avec Docker est la méthode recommandée pour la production :
+
+```bash
+# Build et démarrage
+docker-compose up -d --build
+
+# Vérifier le statut
+docker-compose ps
+
+# Consulter les logs
+docker-compose logs -f
 ```
 
 ### Optimisation
