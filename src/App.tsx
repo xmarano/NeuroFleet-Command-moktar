@@ -9,7 +9,6 @@ import { KeyboardShortcutsHelp } from "./components/KeyboardShortcutsHelp"
 import { ScrollArea } from "./components/ui/scroll-area"
 import { Button } from "./components/ui/button"
 import { Separator } from "./components/ui/separator"
-import { Skeleton } from "./components/ui/skeleton"
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "./components/ui/sheet"
 import { Lightning, Trash, Download, List } from "@phosphor-icons/react"
 import { useIncidentStream } from "./hooks/use-incident-stream"
@@ -74,9 +73,6 @@ function App() {
     
     return sorted
   }, [incidentsList, selectedType, sortBy])
-
-  const incidentsWithAnalysis = filteredAndSortedIncidents.filter((i) => i.analysis)
-  const pendingIncidents = filteredAndSortedIncidents.filter((i) => !i.analysis)
 
   const handleIncidentClick = (incident: IncidentWithAnalysis) => {
     setSelectedIncident(incident)
@@ -296,26 +292,8 @@ function App() {
             </div>
 
             <div className="space-y-3">
-              {pendingIncidents.length > 0 && (
-                <div className="space-y-3">
-                  {pendingIncidents.map((incident) => (
-                    <div key={incident.id} className="space-y-2">
-                      <div className="p-4 border border-border rounded-lg bg-card/50 animate-shimmer backdrop-blur-sm">
-                        <div className="flex items-center gap-2 mb-3">
-                          <Skeleton className="h-4 w-4 rounded-full" />
-                          <Skeleton className="h-5 w-16 rounded-md" />
-                          <Skeleton className="h-3 w-12 rounded-md" />
-                        </div>
-                        <Skeleton className="h-3 w-full mb-2 rounded-md" />
-                        <Skeleton className="h-3 w-3/4 rounded-md" />
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-
-              {incidentsWithAnalysis.length > 0 ? (
-                incidentsWithAnalysis.map((incident, index) => (
+              {filteredAndSortedIncidents.length > 0 ? (
+                filteredAndSortedIncidents.map((incident, index) => (
                   <motion.div 
                     key={incident.id}
                     initial={{ opacity: 0, y: 20 }}
@@ -335,38 +313,36 @@ function App() {
                   </motion.div>
                 ))
               ) : (
-                !pendingIncidents.length && (
-                  <motion.div 
-                    className="flex flex-col items-center justify-center py-12 text-center"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                <motion.div 
+                  className="flex flex-col items-center justify-center py-12 text-center"
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                >
+                  <motion.div
+                    animate={{ 
+                      y: [0, -10, 0],
+                      opacity: [0.5, 0.8, 0.5]
+                    }}
+                    transition={{ 
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
                   >
-                    <motion.div
-                      animate={{ 
-                        y: [0, -10, 0],
-                        opacity: [0.5, 0.8, 0.5]
-                      }}
-                      transition={{ 
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                      }}
-                    >
-                      <Lightning weight="thin" className="w-16 h-16 text-muted-foreground/50 mb-4" />
-                    </motion.div>
-                    <h3 className="text-base font-semibold mb-2">
-                      {selectedType !== "all" 
-                        ? "Aucun incident de ce type"
-                        : "En attente d'incidents..."}
-                    </h3>
-                    <p className="text-sm text-muted-foreground max-w-md leading-relaxed px-4">
-                      {selectedType !== "all"
-                        ? "Essayez de sélectionner un autre type d'incident."
-                        : "Le système surveille votre flotte en temps réel."}
-                    </p>
+                    <Lightning weight="thin" className="w-16 h-16 text-muted-foreground/50 mb-4" />
                   </motion.div>
-                )
+                  <h3 className="text-base font-semibold mb-2">
+                    {selectedType !== "all" 
+                      ? "Aucun incident de ce type"
+                      : "En attente d'incidents..."}
+                  </h3>
+                  <p className="text-sm text-muted-foreground max-w-md leading-relaxed px-4">
+                    {selectedType !== "all"
+                      ? "Essayez de sélectionner un autre type d'incident."
+                      : "Le système surveille votre flotte en temps réel."}
+                  </p>
+                </motion.div>
               )}
             </div>
           </div>
@@ -420,7 +396,7 @@ function App() {
                   transition={{ type: "spring", stiffness: 400 }}
                 >
                   <div className="text-2xl font-bold font-mono text-accent">
-                    {incidentsWithAnalysis.length}
+                    {filteredAndSortedIncidents.length}
                   </div>
                   <div className="text-xs text-muted-foreground">
                     Analyzed
@@ -441,26 +417,8 @@ function App() {
             <div className="flex-1 overflow-hidden relative z-10 min-h-0">
               <ScrollArea className="h-full">
                 <div className="p-6 space-y-4">
-                  {pendingIncidents.length > 0 && (
-                    <div className="space-y-4">
-                      {pendingIncidents.map((incident) => (
-                        <div key={incident.id} className="space-y-3">
-                          <div className="p-5 border border-border rounded-lg bg-card/50 animate-shimmer backdrop-blur-sm">
-                            <div className="flex items-center gap-3 mb-4">
-                              <Skeleton className="h-5 w-5 rounded-full" />
-                              <Skeleton className="h-6 w-20 rounded-md" />
-                              <Skeleton className="h-4 w-16 rounded-md" />
-                            </div>
-                            <Skeleton className="h-4 w-full mb-2 rounded-md" />
-                            <Skeleton className="h-4 w-3/4 rounded-md" />
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-
-                  {incidentsWithAnalysis.length > 0 ? (
-                    incidentsWithAnalysis.map((incident, index) => (
+                  {filteredAndSortedIncidents.length > 0 ? (
+                    filteredAndSortedIncidents.map((incident, index) => (
                       <motion.div 
                         key={incident.id}
                         initial={{ opacity: 0, y: 20 }}
@@ -480,38 +438,36 @@ function App() {
                       </motion.div>
                     ))
                   ) : (
-                    !pendingIncidents.length && (
-                      <motion.div 
-                        className="flex flex-col items-center justify-center py-12 text-center"
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    <motion.div 
+                      className="flex flex-col items-center justify-center py-12 text-center"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+                    >
+                      <motion.div
+                        animate={{ 
+                          y: [0, -10, 0],
+                          opacity: [0.5, 0.8, 0.5]
+                        }}
+                        transition={{ 
+                          duration: 3,
+                          repeat: Infinity,
+                          ease: "easeInOut"
+                        }}
                       >
-                        <motion.div
-                          animate={{ 
-                            y: [0, -10, 0],
-                            opacity: [0.5, 0.8, 0.5]
-                          }}
-                          transition={{ 
-                            duration: 3,
-                            repeat: Infinity,
-                            ease: "easeInOut"
-                          }}
-                        >
-                          <Lightning weight="thin" className="w-20 h-20 text-muted-foreground/50 mb-4" />
-                        </motion.div>
-                        <h3 className="text-lg font-semibold mb-2">
-                          {selectedType !== "all" 
-                            ? "Aucun incident de ce type"
-                            : "Waiting for incidents..."}
-                        </h3>
-                        <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
-                          {selectedType !== "all"
-                            ? "Essayez de sélectionner un autre type d'incident dans les filtres ci-dessus."
-                            : "The system is monitoring your fleet in real-time. New incidents will appear here automatically with AI-powered analysis."}
-                        </p>
+                        <Lightning weight="thin" className="w-20 h-20 text-muted-foreground/50 mb-4" />
                       </motion.div>
-                    )
+                      <h3 className="text-lg font-semibold mb-2">
+                        {selectedType !== "all" 
+                          ? "Aucun incident de ce type"
+                          : "Waiting for incidents..."}
+                      </h3>
+                      <p className="text-sm text-muted-foreground max-w-md leading-relaxed">
+                        {selectedType !== "all"
+                          ? "Essayez de sélectionner un autre type d'incident dans les filtres ci-dessus."
+                          : "The system is monitoring your fleet in real-time. New incidents will appear here automatically with AI-powered analysis."}
+                      </p>
+                    </motion.div>
                   )}
                 </div>
               </ScrollArea>

@@ -19,16 +19,11 @@ export function useIncidentStream(isActive: boolean) {
     
     try {
       const newIncident = generateMockIncident()
-      
-      setIncidents((current) => [newIncident, ...(current || [])])
-      
       const analysis = await analyzeIncident(newIncident)
       
-      setIncidents((current) =>
-        (current || []).map((inc) =>
-          inc.id === newIncident.id ? { ...inc, analysis } : inc
-        )
-      )
+      const incidentWithAnalysis = { ...newIncident, analysis }
+      
+      setIncidents((current) => [incidentWithAnalysis, ...(current || [])])
       
       setNewIncidentIds((prev) => new Set(prev).add(newIncident.id))
       
