@@ -1,0 +1,55 @@
+# Node modules
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output (uncomment when using multistage build)
+# dist
+dist-ssr
+*-dist
+
+# Environment files
+.env
+.env.local
+.env*.local
+
+# Git
+.git
+.gitignore
+
+# IDE
+.vscode
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.DS_Store
+
+# Docker files (except Dockerfile)
+.dockerignore
+docker-compose.yml
+Dockerfile.multistage
+
+# Documentation
+*.md
+!README.md
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage
+.nyc_output
+
+# Miscellaneous
+.devcontainer
+packages
+pids
+.file-manifest
+.spark-workbench-id
+**/agent-eval-report*
